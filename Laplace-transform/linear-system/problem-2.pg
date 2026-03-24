@@ -1,0 +1,56 @@
+# Written by Dhruba Adhikari
+
+## DESCRIPTION
+## Give a value for pi
+## ENDDESCRIPTION
+
+## KEYWORDS('template', 'pi')
+
+## DBsubject('Algebra')
+## DBchapter('Fundamentals')
+## DBsection('Real Numbers')
+## Date('')
+## Author('')
+## Institution('')
+
+DOCUMENT();
+
+loadMacros(
+  "PGstandard.pl",
+  "MathObjects.pl",
+  "PGcourse.pl",
+);
+
+TEXT(beginproblem());
+
+Context("Numeric");
+Context()->variables->add(t => "Real");
+
+BEGIN_TEXT
+Solve the system using Laplace transforms:
+\[
+x'(t)=x(t)+y(t)+1, \qquad y'(t)=-x(t)+y(t),
+\]
+with initial conditions
+\[
+x(0)=0,\qquad y(0)=1.
+\]
+
+Enter your answers as functions of \(t\).
+
+\[
+x(t)= \{ ans_rule(30) \}
+\]
+
+\[
+y(t)= \{ ans_rule(30) \}
+\]
+END_TEXT
+
+$xt = Formula("(exp(t)*sin(t)+exp(t)*cos(t)-1)/2");
+$yt = Formula("(exp(t)*cos(t)-exp(t)*sin(t)+1)/2");
+
+ANS($xt->cmp());
+ANS($yt->cmp());
+
+ENDDOCUMENT();
