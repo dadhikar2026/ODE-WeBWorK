@@ -1,0 +1,65 @@
+## DESCRIPTION
+## Solve an IVP using Laplace transforms
+## ENDDESCRIPTION
+
+## DBsubject(Differential equations)
+## DBchapter(Laplace transforms)
+## DBsection(Initial value problems)
+## Institution(KSU)
+## Author(KSU ODE Team)
+## Level(3)
+## KEYWORDS('Laplace transform', 'initial value problem', 'second order')
+
+DOCUMENT();
+
+loadMacros(
+    "PGstandard.pl",
+    "MathObjects.pl",
+    "AnswerFormatHelp.pl",
+    "PGML.pl",
+    "PGcourse.pl",
+);
+
+TEXT(beginproblem());
+
+Context("Numeric");
+
+# Solve y'' - (r1+r2)*y' + r1*r2*y = 0, y(0)=y0, y'(0)=yp0
+# using Laplace transforms. Answer = C1*e^(r1*t) + C2*e^(r2*t)
+$r1 = non_zero_random(-4, 4);
+do { $r2 = non_zero_random(-4, 4); } until ($r2 != $r1);
+
+$b = -($r1 + $r2);
+$c  = $r1 * $r2;
+
+$y0  = random(1, 4);
+$yp0 = random(-3, 3);
+
+# Solve: C1 + C2 = y0, r1*C1 + r2*C2 = yp0
+# C1 = (yp0 - r2*y0)/(r1-r2)
+# C2 = (r1*y0 - yp0)/(r1-r2)
+$denom = $r1 - $r2;
+$C1_num = $yp0 - $r2*$y0;
+$C2_num = $r1*$y0 - $yp0;
+
+BEGIN_PGML
+Use Laplace transforms to solve the initial value problem
+
+>>[`y'' + [$b] y' + [$c] y = 0, \quad y(0) = [$y0], \quad y'(0) = [$yp0].`]<<
+
+[`y(t)`] = [____________________________]{Compute("($C1_num/$denom)*e^($r1*t) + ($C2_num/$denom)*e^($r2*t)")} [@ AnswerFormatHelp("formulas") @]*
+END_PGML
+
+BEGIN_PGML_SOLUTION
+Taking the Laplace transform and applying the initial conditions:
+
+[`s^2 Y - [$y0]s - [$yp0] + [$b](sY - [$y0]) + [$c] Y = 0`]
+
+[`Y(s^2 + [$b]s + [$c]) = [$y0]s + [$yp0] + [$b]\cdot[$y0]`]
+
+Factor the characteristic polynomial [`(s-[$r1])(s-[$r2])`] and use partial fractions to invert.
+
+The solution is [`y(t) = \dfrac{[$C1_num]}{[$denom]}e^{[$r1]t} + \dfrac{[$C2_num]}{[$denom]}e^{[$r2]t}`].
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

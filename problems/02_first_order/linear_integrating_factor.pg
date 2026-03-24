@@ -1,0 +1,69 @@
+## DESCRIPTION
+## Solving a linear first-order ODE using an integrating factor
+## ENDDESCRIPTION
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Linear)
+## Institution(KSU)
+## Author(KSU ODE Team)
+## Level(3)
+## KEYWORDS('differential equations', 'linear', 'integrating factor', 'first order')
+
+DOCUMENT();
+
+loadMacros(
+    "PGstandard.pl",
+    "MathObjects.pl",
+    "AnswerFormatHelp.pl",
+    "PGML.pl",
+    "PGcourse.pl",
+);
+
+TEXT(beginproblem());
+
+Context("Numeric");
+
+# y' + p*y = q*x  =>  integrating factor mu = e^(p*x)
+# Solution: y = (q/p)*x - q/p^2 + C*e^(-p*x)
+$p = random(1, 4);
+$q = non_zero_random(-4, 4);
+
+# For IVP y(0) = y0 => C = y0 - (-q/p^2) = y0 + q/p^2
+$y0 = random(-3, 3);
+# C = y0 + q/p^2  -- leave as formula
+$C_num = $y0 * $p**2 + $q;  # numerator of C when C = (y0*p^2 + q)/p^2
+
+BEGIN_PGML
+Find the general solution to the linear first-order differential equation
+
+>>[` y' + [$p] y = [$q] x. `]<<
+
+Enter the general solution using [`C`] for the arbitrary constant:
+
+[`y(x)`] = [____________________________]{Compute("($q/$p)*x - $q/($p^2) + C*e^(-$p*x)")} [@ AnswerFormatHelp("formulas") @]*
+
+---
+
+Now solve the initial value problem with [`y(0) = [$y0]`].
+
+[`y(x)`] = [____________________________]{Compute("($q/$p)*x - $q/($p^2) + ($C_num/$p^2)*e^(-$p*x)")} [@ AnswerFormatHelp("formulas") @]*
+END_PGML
+
+BEGIN_PGML_SOLUTION
+**Integrating factor:** [`\mu(x) = e^{\int [$p]\,dx} = e^{[$p]x}`].
+
+Multiply both sides: [`(e^{[$p]x} y)' = [$q] x e^{[$p]x}`].
+
+Integrate the right side by parts:
+
+[`e^{[$p]x} y = \frac{[$q]}{[$p]} x e^{[$p]x} - \frac{[$q]}{[$p]^2} e^{[$p]x} + C`]
+
+Divide by [`e^{[$p]x}`]:
+
+[`y = \frac{[$q]}{[$p]} x - \frac{[$q]}{[$p]^2} + C e^{-[$p]x}`]
+
+For the IVP, set [`x=0, y=[$y0]`]: [`[$y0] = -\frac{[$q]}{[$p]^2} + C`], so [`C = \frac{[$C_num]}{[$p]^2}`].
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

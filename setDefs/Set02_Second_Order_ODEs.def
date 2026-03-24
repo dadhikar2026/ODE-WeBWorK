@@ -1,0 +1,18 @@
+assignmentType = default
+psvn = 0
+name = Set02_Second_Order_ODEs
+openDate = 01/01/2000 at 12:00am
+reducedScoringDate = 12/31/2099 at 11:59pm
+dueDate = 12/31/2099 at 11:59pm
+answerDate = 12/31/2099 at 11:59pm
+paperHeaderFile =
+screenHeaderFile =
+
+problemListV2
+source_file = problems/03_second_order/const_coeff_real_roots.pg
+value = 1
+max_attempts = -1
+
+source_file = problems/03_second_order/const_coeff_complex_roots.pg
+value = 1
+max_attempts = -1
