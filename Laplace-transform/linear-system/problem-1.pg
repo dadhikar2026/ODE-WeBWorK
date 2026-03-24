@@ -45,7 +45,10 @@ $yt = Formula("(exp(3*t)-exp(t))/2");
 BEGIN_TEXT
 Use Laplace transforms to solve the system
 \[
-x'(t)=2x(t)+y(t), \qquad y'(t)=x(t)+2y(t),
+    \begin{cases}
+x'(t)=2x(t)+y(t),\\
+ y'(t)=x(t)+2y(t),
+ \end{cases}
 \]
 with initial conditions
 \[
@@ -55,7 +58,8 @@ x(0)=1,\qquad y(0)=0.
 Enter your answers as functions of \(t\).
 
 $PAR
-\(x(t)=\) \{ ans_rule(30) \} $PAR
+\(x(t)=\) \{ ans_rule(30) \} 
+$PAR
 \(y(t)=\) \{ ans_rule(30) \}
 END_TEXT
 
