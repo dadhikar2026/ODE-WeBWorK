@@ -1,3 +1,5 @@
+# Written by Dhruba Adhikari
+
 DOCUMENT();
 
 loadMacros(
@@ -8,6 +10,7 @@ loadMacros(
 
 TEXT(beginproblem());
 Context("Numeric");
+Context()->variables->add(t => "Real");
 
 # ============================================================
 # Instructor comments:
@@ -27,6 +30,8 @@ $b = list_random(1,2);
 $lam1 = $a + $b;
 $lam2 = $a - $b;
 
+
+
 $xsol = Formula("((exp($lam1*t) + exp($lam2*t))/2)");
 $ysol = Formula("((exp($lam1*t) - exp($lam2*t))/2)");
 
@@ -43,13 +48,10 @@ x(0)=1,\; y(0)=0.
 
 Enter your answers as functions of \(t\).
 
-\[
-x(t)=\ \{ ans_rule(35) \}
-\]
-
-\[
-y(t)=\ \{ ans_rule(35) \}
-\]
+$PAR
+\(x(t)=\) \{ ans_rule(35) \}
+$PAR
+\(y(t)=\) \{ ans_rule(35) \}
 END_TEXT
 
 ANS($xsol->cmp()->withPostFilter(sub {
@@ -63,7 +65,7 @@ ANS($ysol->cmp()->withPostFilter(sub {
 
 BEGIN_HINT
 Take Laplace transforms of both equations first, using
-\(\mathcal{L}\{x'(t)\}=sX(s)-x(0)\) and \(\mathcal{L}\{y'(t)\}=sY(s)-y(0)\).
+\(\mathscr{L}\left\lbrace x'(t)\right\rbrace =sX(s)-x(0)\) and \(\mathscr{L}\left\lbrace y'(t)\right\rbrace =sY(s)-y(0)\).
 END_HINT
 
 BEGIN_HINT
@@ -71,7 +73,7 @@ You should obtain a 2-by-2 algebraic system for \(X(s)\) and \(Y(s)\).
 END_HINT
 
 BEGIN_SOLUTION
-Let \(X(s)=\mathcal{L}\{x(t)\}\) and \(Y(s)=\mathcal{L}\{y(t)\}\).  
+Let \(X(s)=\mathscr{L}\left\lbrace x(t)\right\rbrace\) and \(Y(s)=\mathscr{L}\left\lbrace  y(t)\right\rbrace \).
 Taking Laplace transforms gives
 \[
 sX(s)-1 = $a X(s)+$b Y(s), \qquad sY(s) = $b X(s)+$a Y(s).

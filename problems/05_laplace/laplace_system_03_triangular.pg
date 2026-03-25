@@ -8,6 +8,7 @@ loadMacros(
 
 TEXT(beginproblem());
 Context("Numeric");
+Context()->variables->add(t => "Real");
 
 # ============================================================
 # Instructor comments:
@@ -40,21 +41,20 @@ x(0)=$x0,\; y(0)=$y0.
 \]
 
 Enter your answers as functions of \(t\).
+$PAR
+\(
+x(t)=\) \{ ans_rule(30) \}
+$PAR
+\(
+y(t)=\) \{ ans_rule(40) \}
 
-\[
-x(t)=\ \{ ans_rule(30) \}
-\]
-
-\[
-y(t)=\ \{ ans_rule(40) \}
-\]
 END_TEXT
 
 ANS($xsol->cmp());
 ANS($ysol->cmp());
 
 BEGIN_HINT
-First solve for \(X(s)\) from the first equation. Then substitute \(X(s)\) into the transformed second equation.
+First solve for \(X(s)={\mathscr L}\left\lbrace x(t)\right\rbrace\) from the first equation. Then substitute \(X(s)\) into the transformed second equation.
 END_HINT
 
 BEGIN_SOLUTION

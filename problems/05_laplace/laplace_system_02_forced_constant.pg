@@ -8,6 +8,7 @@ loadMacros(
 
 TEXT(beginproblem());
 Context("Numeric");
+Context()->variables->add(t => "Real");
 
 # ============================================================
 # Instructor comments:
@@ -42,13 +43,13 @@ x(0)=0,\; y(0)=1.
 
 Enter your answers as functions of \(t\).
 
-\[
-x(t)=\ \{ ans_rule(40) \}
-\]
+$PAR
+\(
+x(t)=\) \{ ans_rule(40) \}
+$PAR
+\(
+y(t)=\) \{ ans_rule(40) \}
 
-\[
-y(t)=\ \{ ans_rule(40) \}
-\]
 END_TEXT
 
 ANS($xsol->cmp());
@@ -63,18 +64,18 @@ The denominator should involve \((s-1)^2 + $k^2\).
 END_HINT
 
 BEGIN_SOLUTION
-Let \(X(s)=\mathcal{L}\{x(t)\}\) and \(Y(s)=\mathcal{L}\{y(t)\}\).  
+Let \(X(s)=\mathscr{L}\left\lbrace x(t)\right\rbrace\) and \(Y(s)=\mathscr{L}\left\lbrace y(t)\right\rbrace\).
 Taking Laplace transforms gives
 \[
-sX(s)=X(s)+$kY(s)+\frac{$c}{s},
+sX(s)=X(s)+$k Y(s)+\frac{$c}{s},
 \qquad
-sY(s)-1=-$kX(s)+Y(s).
+sY(s)-1=-$k X(s)+Y(s).
 \]
 Thus
 \[
-(s-1)X(s)-$kY(s)=\frac{$c}{s},
+(s-1)X(s)-$k Y(s)=\frac{$c}{s},
 \qquad
-$kX(s)+(s-1)Y(s)=1.
+$k X(s)+(s-1)Y(s)=1.
 \]
 The determinant is
 \[
@@ -88,9 +89,9 @@ Solving and decomposing into partial fractions leads to terms of the form
 \]
 Using
 \[
-\mathcal{L}^{-1}\!\left\{\frac{s-1}{(s-1)^2+$k^2}\right\}=e^t\cos($k t),
-\qquad
-\mathcal{L}^{-1}\!\left\{\frac{1}{(s-1)^2+$k^2}\right\}=\frac1{$k}e^t\sin($k t),
+\mathscr{L}^{-1}\!\left\lbrace\frac{s-1}{(s-1)^2+$k^2}\right\rbrace=e^t\cos($k t),\]
+$PAR
+\[\mathscr{L}^{-1}\!\left\lbrace\frac{1}{(s-1)^2+$k^2}\right\rbrace=\frac1{$k}e^t\sin($k t),
 \]
 we obtain
 \[

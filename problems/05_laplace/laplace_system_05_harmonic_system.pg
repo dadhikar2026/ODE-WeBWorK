@@ -1,3 +1,5 @@
+# Written by Dhruba Adhikari
+
 DOCUMENT();
 
 loadMacros(
@@ -8,6 +10,7 @@ loadMacros(
 
 TEXT(beginproblem());
 Context("Numeric");
+Context()->variables->add(t => "Real");
 
 # ============================================================
 # Instructor comments:
@@ -37,14 +40,13 @@ x(0)=$x0,\; y(0)=$y0.
 \]
 
 Enter your answers as functions of \(t\).
+$PAR
+\(
+x(t)=\) \{ ans_rule(35) \}
+$PAR
+\(
+y(t)=\) \{ ans_rule(35) \}
 
-\[
-x(t)=\ \{ ans_rule(35) \}
-\]
-
-\[
-y(t)=\ \{ ans_rule(35) \}
-\]
 END_TEXT
 
 ANS($xsol->cmp());
@@ -59,7 +61,7 @@ Substitute into the transformed second equation and solve for \(X(s)\).
 END_HINT
 
 BEGIN_SOLUTION
-Let \(X(s)=\mathcal{L}\{x(t)\}\) and \(Y(s)=\mathcal{L}\{y(t)\}\).  
+Let \(X(s)=\mathscr{L}\left\lbrace x(t)\right\rbrace\) and \(Y(s)=\mathscr{L}\left\lbrace y(t)\right\rbrace\).  
 Taking Laplace transforms gives
 \[
 sX(s)-$x0=Y(s),
