@@ -1,0 +1,108 @@
+DOCUMENT();
+
+loadMacros(
+  "PGstandard.pl",
+  "MathObjects.pl",
+  "answerHints.pl"
+);
+
+TEXT(beginproblem());
+Context("Numeric");
+
+# ============================================================
+# Instructor comments:
+# Forced linear system with constant input:
+#   x' = x + k y + c
+#   y' = -k x + y
+# x(0)=0, y(0)=1
+# Solution kept closed-form by fixing the diagonal part at 1 and coupling k.
+# The formulas come from matrix exponential / Laplace inversion:
+#   [x;y] = e^t * rotation-type terms + particular constant vector
+# ============================================================
+
+$k = list_random(1,2,3);
+$c = list_random(1,2,4);
+
+$xsol = Formula("($c/(1+$k^2))*(exp(t)*cos($k*t)-1) + (($c+$k+$k^2)/( $k*(1+$k^2) ))*exp(t)*sin($k*t)");
+$ysol = Formula("(exp(t)*cos($k*t)) + ((1-$c)/(1+$k^2))*exp(t)*sin($k*t) + ($k*$c/(1+$k^2))*(1-exp(t)*cos($k*t))/$k");
+
+# Simplify y formula manually to avoid hidden cancellation problems.
+$ysol = Formula("($k^2*$c/(1+$k^2)) + (1-$k^2*$c/(1+$k^2))*exp(t)*cos($k*t) + ((1-$c)/(1+$k^2))*exp(t)*sin($k*t)");
+
+BEGIN_TEXT
+Use Laplace transforms to solve the system
+\[
+\begin{cases}
+x'(t) = x(t) + $k y(t) + $c,\\
+y'(t) = -$k x(t) + y(t),
+\end{cases}
+\qquad
+x(0)=0,\; y(0)=1.
+\]
+
+Enter your answers as functions of \(t\).
+
+\[
+x(t)=\ \{ ans_rule(40) \}
+\]
+
+\[
+y(t)=\ \{ ans_rule(40) \}
+\]
+END_TEXT
+
+ANS($xsol->cmp());
+ANS($ysol->cmp());
+
+BEGIN_HINT
+After taking Laplace transforms, solve the algebraic system for \(X(s)\) and \(Y(s)\).
+END_HINT
+
+BEGIN_HINT
+The denominator should involve \((s-1)^2 + $k^2\).
+END_HINT
+
+BEGIN_SOLUTION
+Let \(X(s)=\mathcal{L}\{x(t)\}\) and \(Y(s)=\mathcal{L}\{y(t)\}\).  
+Taking Laplace transforms gives
+\[
+sX(s)=X(s)+$kY(s)+\frac{$c}{s},
+\qquad
+sY(s)-1=-$kX(s)+Y(s).
+\]
+Thus
+\[
+(s-1)X(s)-$kY(s)=\frac{$c}{s},
+\qquad
+$kX(s)+(s-1)Y(s)=1.
+\]
+The determinant is
+\[
+(s-1)^2+$k^2.
+\]
+Solving and decomposing into partial fractions leads to terms of the form
+\[
+\frac{s-1}{(s-1)^2+$k^2},\qquad
+\frac{1}{(s-1)^2+$k^2},\qquad
+\frac{1}{s}.
+\]
+Using
+\[
+\mathcal{L}^{-1}\!\left\{\frac{s-1}{(s-1)^2+$k^2}\right\}=e^t\cos($k t),
+\qquad
+\mathcal{L}^{-1}\!\left\{\frac{1}{(s-1)^2+$k^2}\right\}=\frac1{$k}e^t\sin($k t),
+\]
+we obtain
+\[
+x(t)=\left(\frac{$c}{1+$k^2}\right)\!\bigl(e^t\cos($k t)-1\bigr)
++\left(\frac{$c+$k+$k^2}{$k(1+$k^2)}\right)e^t\sin($k t),
+\]
+\[
+y(t)=\frac{$k^2 $c}{1+$k^2}
++\left(1-\frac{$k^2 $c}{1+$k^2}\right)e^t\cos($k t)
++\left(\frac{1-$c}{1+$k^2}\right)e^t\sin($k t).
+\]
+Any algebraically equivalent form is correct.
+END_SOLUTION
+
+ENDDOCUMENT();

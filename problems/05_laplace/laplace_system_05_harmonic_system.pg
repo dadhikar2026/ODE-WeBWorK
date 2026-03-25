@@ -1,0 +1,91 @@
+DOCUMENT();
+
+loadMacros(
+  "PGstandard.pl",
+  "MathObjects.pl",
+  "answerHints.pl"
+);
+
+TEXT(beginproblem());
+Context("Numeric");
+
+# ============================================================
+# Instructor comments:
+# Canonical first-order system equivalent to x'' + w^2 x = 0:
+#   x' = y
+#   y' = -w^2 x
+# with x(0)=x0, y(0)=y0
+# Excellent Laplace-transform system problem with sin/cos answers.
+# ============================================================
+
+$w = list_random(1,2,3,4);
+$x0 = list_random(1,2,3);
+$y0 = list_random(0,1,2,3);
+
+$xsol = Formula("$x0*cos($w*t) + ($y0/$w)*sin($w*t)");
+$ysol = Formula("-$w*$x0*sin($w*t) + $y0*cos($w*t)");
+
+BEGIN_TEXT
+Use Laplace transforms to solve the system
+\[
+\begin{cases}
+x'(t)=y(t),\\
+y'(t)=-$w^2 x(t),
+\end{cases}
+\qquad
+x(0)=$x0,\; y(0)=$y0.
+\]
+
+Enter your answers as functions of \(t\).
+
+\[
+x(t)=\ \{ ans_rule(35) \}
+\]
+
+\[
+y(t)=\ \{ ans_rule(35) \}
+\]
+END_TEXT
+
+ANS($xsol->cmp());
+ANS($ysol->cmp());
+
+BEGIN_HINT
+From the transformed first equation, \(Y(s)=sX(s)-$x0\).
+END_HINT
+
+BEGIN_HINT
+Substitute into the transformed second equation and solve for \(X(s)\).
+END_HINT
+
+BEGIN_SOLUTION
+Let \(X(s)=\mathcal{L}\{x(t)\}\) and \(Y(s)=\mathcal{L}\{y(t)\}\).  
+Taking Laplace transforms gives
+\[
+sX(s)-$x0=Y(s),
+\qquad
+sY(s)-$y0=-$w^2 X(s).
+\]
+Substitute \(Y(s)=sX(s)-$x0\) into the second equation:
+\[
+s(sX(s)-$x0)-$y0=-$w^2 X(s).
+\]
+So
+\[
+(s^2+$w^2)X(s)=$x0 s + $y0.
+\]
+Hence
+\[
+X(s)=\frac{$x0 s}{s^2+$w^2}+\frac{$y0}{s^2+$w^2}.
+\]
+Using inverse Laplace transforms,
+\[
+x(t)=$x0\cos($w t)+\frac{$y0}{$w}\sin($w t).
+\]
+Then
+\[
+y(t)=x'(t)=-$w$x0\sin($w t)+$y0\cos($w t).
+\]
+END_SOLUTION
+
+ENDDOCUMENT();

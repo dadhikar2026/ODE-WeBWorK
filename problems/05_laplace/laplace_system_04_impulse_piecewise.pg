@@ -1,0 +1,107 @@
+DOCUMENT();
+
+loadMacros(
+  "PGstandard.pl",
+  "MathObjects.pl",
+  "answerHints.pl"
+);
+
+TEXT(beginproblem());
+Context("Numeric");
+
+# ============================================================
+# Instructor comments:
+# Impulse-driven harmonic system:
+#   x' = y
+#   y' = -w^2 x + delta(t-a)
+# with zero ICs.
+# In Laplace domain:
+#   sX = Y
+#   sY = -w^2 X + e^{-as}
+# so
+#   X = e^{-as}/(s^2+w^2)
+# Thus x(t) = (1/w) sin(w(t-a)) for t>a, and 0 for 0<=t<a.
+#
+# Portability note:
+# Because not all WeBWorK servers support Heaviside/step well, the answer
+# blank below asks only for the formula valid for t>a. The statement
+# explicitly asks for "for t>a". The full piecewise form is in the solution.
+# ============================================================
+
+$w = list_random(1,2,3,4);
+$a = list_random(1,2,3);
+
+$xafter = Formula("(1/$w)*sin($w*(t-$a))");
+
+BEGIN_TEXT
+Consider the impulse-driven system
+\[
+\begin{cases}
+x'(t)=y(t),\\
+y'(t)=-$w^2 x(t)+\delta(t-$a),
+\end{cases}
+\qquad
+x(0)=0,\; y(0)=0.
+\]
+
+Use Laplace transforms to determine \(x(t)\).  
+For WeBWorK entry, enter only the formula valid for \(t>$a\).
+
+\[
+x(t)=\ \{ ans_rule(35) \}
+\]
+END_TEXT
+
+ANS($xafter->cmp());
+
+BEGIN_HINT
+After taking Laplace transforms, eliminate \(Y(s)\) using \(Y(s)=sX(s)\).
+END_HINT
+
+BEGIN_HINT
+Use the second shifting theorem:
+\[
+\mathcal{L}^{-1}\{e^{-as}F(s)\} = u(t-a)f(t-a).
+\]
+END_HINT
+
+BEGIN_SOLUTION
+Let \(X(s)=\mathcal{L}\{x(t)\}\) and \(Y(s)=\mathcal{L}\{y(t)\}\).  
+Taking Laplace transforms gives
+\[
+sX(s)=Y(s),
+\qquad
+sY(s)=-$w^2 X(s)+e^{-($a)s}.
+\]
+Substitute \(Y(s)=sX(s)\) into the second equation:
+\[
+s^2X(s)=-$w^2X(s)+e^{-($a)s}.
+\]
+Hence
+\[
+X(s)=\frac{e^{-($a)s}}{s^2+$w^2}.
+\]
+Since
+\[
+\mathcal{L}^{-1}\!\left\{\frac{1}{s^2+$w^2}\right\}
+=\frac1{$w}\sin($w t),
+\]
+the second shifting theorem gives
+\[
+x(t)=u(t-$a)\frac1{$w}\sin\bigl($w(t-$a)\bigr).
+\]
+Equivalently,
+\[
+x(t)=
+\begin{cases}
+0, & 0\le t < $a,\\[4pt]
+\dfrac1{$w}\sin\!\bigl($w(t-$a)\bigr), & t\ge $a.
+\end{cases}
+\]
+Thus, for \(t>$a\),
+\[
+x(t)=\frac1{$w}\sin\!\bigl($w(t-$a)\bigr).
+\]
+END_SOLUTION
+
+ENDDOCUMENT();
