@@ -1,0 +1,60 @@
+## DESCRIPTION
+## Solving a separable first-order ODE
+## ENDDESCRIPTION
+
+## DBsubject(Differential equations)
+## DBchapter(First order differential equations)
+## DBsection(Separable)
+## Institution(KSU)
+## Author(KSU ODE Team)
+## Level(2)
+## KEYWORDS('differential equations', 'separable', 'first order')
+
+DOCUMENT();
+
+loadMacros(
+    "PGstandard.pl",
+    "MathObjects.pl",
+    "AnswerFormatHelp.pl",
+    "PGML.pl",
+    "PGcourse.pl",
+);
+
+TEXT(beginproblem());
+
+Context("Numeric")->variables->add(C => "Real");
+
+# dy/dx = a*x / y  =>  y^2 = a*x^2 + C  =>  y = sqrt(a*x^2 + C)
+$a = non_zero_random(2, 6);
+$x0 = random(1, 4);
+$y0 = non_zero_random(2, 5);
+# C = y0^2 - a*x0^2
+$C = $y0**2 - $a * $x0**2;
+
+BEGIN_PGML
+Solve the separable differential equation
+
+>>[` \dfrac{dy}{dx} = \dfrac{[$a] x}{y}, \quad y([$x0]) = [$y0]. `]<<
+
+Give the explicit solution [`y`] (take the positive root):
+
+[`y(x)`] = [____________________________]{Compute("sqrt($a*x^2 + $C)")->with(limits=>[$x0-0.5,$x0+1])} [@ AnswerFormatHelp("formulas") @]*
+END_PGML
+
+BEGIN_PGML_SOLUTION
+Separate variables:
+
+[`y \, dy = [$a] x \, dx`]
+
+Integrate both sides:
+
+[`\dfrac{y^2}{2} = [$a] \dfrac{x^2}{2} + K \implies y^2 = [$a] x^2 + C`]
+
+Apply the initial condition [`y([$x0]) = [$y0]`]:
+
+[`[$y0]^2 = [$a]([$x0])^2 + C \implies C = [$C]`]
+
+Therefore: [`y = \sqrt{[$a]x^2 + [$C]}`].
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

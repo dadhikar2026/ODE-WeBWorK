@@ -1,0 +1,73 @@
+## DESCRIPTION
+## Solving a second-order linear ODE with constant coefficients (distinct real roots)
+## ENDDESCRIPTION
+
+## DBsubject(Differential equations)
+## DBchapter(Second order differential equations)
+## DBsection(Distinct real roots)
+## Institution(KSU)
+## Author(KSU ODE Team)
+## Level(2)
+## KEYWORDS('differential equations', 'second order', 'constant coefficients', 'characteristic equation')
+
+DOCUMENT();
+
+loadMacros(
+    "PGstandard.pl",
+    "MathObjects.pl",
+    "AnswerFormatHelp.pl",
+    "PGML.pl",
+    "PGcourse.pl",
+);
+
+TEXT(beginproblem());
+
+Context("Numeric");
+
+# y'' - (r1+r2)*y' + r1*r2*y = 0  with distinct real roots r1, r2
+# General solution: y = C1*e^(r1*x) + C2*e^(r2*x)
+$r1 = non_zero_random(-5, 5);
+do { $r2 = non_zero_random(-5, 5); } until ($r2 != $r1);
+
+$b = -($r1 + $r2);   # coefficient of y'
+$c = $r1 * $r2;      # coefficient of y
+
+# IVP: y(0)=1, y'(0)=0  => C1 + C2 = 1, r1*C1 + r2*C2 = 0
+# C2 = -r1/(r2-r1),  C1 = r2/(r2-r1)
+# Avoid fractions in answer display by using exact formula
+$denom = $r2 - $r1;
+
+BEGIN_PGML
+Find the general solution to
+
+>>[` y'' + [$b] y' + [$c] y = 0. `]<<
+
+*Hint:* Find the roots of the characteristic equation.
+
+Enter the general solution using [`C_1`] and [`C_2`] for the arbitrary constants:
+
+[`y(x)`] = [____________________________]{Compute("C_1*e^($r1*x) + C_2*e^($r2*x)")} [@ AnswerFormatHelp("formulas") @]*
+
+---
+
+Now solve the initial value problem with [`y(0) = 1`] and [`y'(0) = 0`]:
+
+[`y(x)`] = [____________________________]{Compute("($r2/$denom)*e^($r1*x) + (-$r1/$denom)*e^($r2*x)")} [@ AnswerFormatHelp("formulas") @]*
+END_PGML
+
+BEGIN_PGML_SOLUTION
+The characteristic equation is:
+
+[`r^2 + [$b] r + [$c] = 0 \implies (r - [$r1])(r - [$r2]) = 0`]
+
+Roots: [`r_1 = [$r1]`], [`r_2 = [$r2]`] (distinct real roots).
+
+General solution: [`y = C_1 e^{[$r1]x} + C_2 e^{[$r2]x}`].
+
+**IVP:** [`y(0)=1 \Rightarrow C_1 + C_2 = 1`].  
+[`y'(0)=0 \Rightarrow [$r1]C_1 + [$r2]C_2 = 0`].
+
+Solving: [`C_1 = \dfrac{[$r2]}{[$denom]}`], [`C_2 = \dfrac{-[$r1]}{[$denom]}`].
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

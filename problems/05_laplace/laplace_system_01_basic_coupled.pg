@@ -1,0 +1,103 @@
+# Written by Dhruba Adhikari
+
+DOCUMENT();
+
+loadMacros(
+  "PGstandard.pl",
+  "MathObjects.pl",
+  "answerHints.pl"
+);
+
+TEXT(beginproblem());
+Context("Numeric");
+Context()->variables->add(t => "Real");
+
+# ============================================================
+# Instructor comments:
+# Randomized 2x2 coupled homogeneous system
+#   x' = a x + b y
+#   y' = b x + a y
+# with x(0)=1, y(0)=0.
+# Chosen because the Laplace transform leads to a symmetric algebraic system
+# and the exact solution stays clean:
+#   x(t) = (exp((a+b)t)+exp((a-b)t))/2
+#   y(t) = (exp((a+b)t)-exp((a-b)t))/2
+# ============================================================
+
+$a = list_random(1,2,3);
+$b = list_random(1,2);
+
+$lam1 = $a + $b;
+$lam2 = $a - $b;
+
+
+
+$xsol = Formula("((exp($lam1*t) + exp($lam2*t))/2)");
+$ysol = Formula("((exp($lam1*t) - exp($lam2*t))/2)");
+
+BEGIN_TEXT
+Use Laplace transforms to solve the system
+\[
+\begin{cases}
+x'(t) = $a x(t) + $b y(t),\\
+y'(t) = $b x(t) + $a y(t),
+\end{cases}
+\qquad
+x(0)=1,\; y(0)=0.
+\]
+
+Enter your answers as functions of \(t\).
+
+$PAR
+\(x(t)=\) \{ ans_rule(35) \}
+$PAR
+\(y(t)=\) \{ ans_rule(35) \}
+END_TEXT
+
+ANS($xsol->cmp()->withPostFilter(sub {
+  my $ans = shift;
+  return $ans;
+}));
+ANS($ysol->cmp()->withPostFilter(sub {
+  my $ans = shift;
+  return $ans;
+}));
+
+BEGIN_HINT
+Take Laplace transforms of both equations first, using
+\(\mathscr{L}\left\lbrace x'(t)\right\rbrace =sX(s)-x(0)\) and \(\mathscr{L}\left\lbrace y'(t)\right\rbrace =sY(s)-y(0)\).
+END_HINT
+
+BEGIN_HINT
+You should obtain a 2-by-2 algebraic system for \(X(s)\) and \(Y(s)\).
+END_HINT
+
+BEGIN_SOLUTION
+Let \(X(s)=\mathscr{L}\left\lbrace x(t)\right\rbrace\) and \(Y(s)=\mathscr{L}\left\lbrace  y(t)\right\rbrace \).
+Taking Laplace transforms gives
+\[
+sX(s)-1 = $a X(s)+$b Y(s), \qquad sY(s) = $b X(s)+$a Y(s).
+\]
+Hence
+\[
+(s-$a)X(s)-$b Y(s)=1,\qquad -$b X(s)+(s-$a)Y(s)=0.
+\]
+Solving this linear system yields
+\[
+X(s)=\frac{s-$a}{(s-$a)^2-$b^2}
+ = \frac12\left(\frac{1}{s-($lam1)}+\frac{1}{s-($lam2)}\right),
+\]
+and
+\[
+Y(s)=\frac{$b}{(s-$a)^2-$b^2}
+ = \frac12\left(\frac{1}{s-($lam1)}-\frac{1}{s-($lam2)}\right).
+\]
+Therefore,
+\[
+x(t)=\frac{e^{($lam1)t}+e^{($lam2)t}}{2},
+\qquad
+y(t)=\frac{e^{($lam1)t}-e^{($lam2)t}}{2}.
+\]
+END_SOLUTION
+
+ENDDOCUMENT();

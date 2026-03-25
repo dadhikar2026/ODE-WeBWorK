@@ -1,0 +1,22 @@
+assignmentType = default
+psvn = 0
+name = Set01_Introduction_to_ODEs
+openDate = 01/01/2000 at 12:00am
+reducedScoringDate = 12/31/2099 at 11:59pm
+dueDate = 12/31/2099 at 11:59pm
+answerDate = 12/31/2099 at 11:59pm
+paperHeaderFile =
+screenHeaderFile =
+
+problemListV2
+source_file = problems/01_intro_ODEs/verify_solution.pg
+value = 1
+max_attempts = -1
+
+source_file = problems/02_first_order/separable_ode.pg
+value = 1
+max_attempts = -1
+
+source_file = problems/02_first_order/linear_integrating_factor.pg
+value = 1
+max_attempts = -1

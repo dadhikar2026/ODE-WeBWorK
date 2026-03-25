@@ -1,0 +1,54 @@
+## DESCRIPTION
+## Verifying that a given function is a solution to an ODE
+## ENDDESCRIPTION
+
+## DBsubject(Differential equations)
+## DBchapter(Introduction)
+## DBsection(Verifying solutions)
+## Institution(KSU)
+## Author(KSU ODE Team)
+## Level(2)
+## KEYWORDS('differential equations', 'verify solution', 'first order')
+
+DOCUMENT();
+
+loadMacros(
+    "PGstandard.pl",
+    "MathObjects.pl",
+    "AnswerFormatHelp.pl",
+    "PGML.pl",
+    "PGcourse.pl",
+);
+
+TEXT(beginproblem());
+
+Context("Numeric");
+
+# Randomize the constant and coefficient
+$a = non_zero_random(-4, 4);
+$b = non_zero_random(1, 5);
+
+# y = $a * e^($b * x) satisfies y' = $b * y
+# We ask students to find C such that y = C*e^($b*x) satisfies y' - $b*y = 0
+# and passes through (0, $a).
+
+BEGIN_PGML
+Verify that [`y = [$a] e^{[$b]x}`] is a solution to the differential equation
+
+>>[` y' - [$b] y = 0. `]<<
+
+Find the value of the arbitrary constant [`C`] in the general solution
+[`y = C e^{[$b]x}`] that satisfies the initial condition [`y(0) = [$a]`].
+
+[`C`] = [_____]{$a} [@ AnswerFormatHelp("numbers") @]*
+END_PGML
+
+BEGIN_PGML_SOLUTION
+The general solution is [`y = C e^{[$b]x}`].
+
+Applying the initial condition [`y(0) = [$a]`]:
+
+[`C e^{0} = [$a] \Rightarrow C = [$a]`].
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

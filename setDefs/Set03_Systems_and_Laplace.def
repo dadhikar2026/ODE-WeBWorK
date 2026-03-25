@@ -1,0 +1,26 @@
+assignmentType = default
+psvn = 0
+name = Set03_Systems_and_Laplace
+openDate = 01/01/2000 at 12:00am
+reducedScoringDate = 12/31/2099 at 11:59pm
+dueDate = 12/31/2099 at 11:59pm
+answerDate = 12/31/2099 at 11:59pm
+paperHeaderFile =
+screenHeaderFile =
+
+problemListV2
+source_file = problems/04_systems/system_real_eigenvalues.pg
+value = 1
+max_attempts = -1
+
+source_file = problems/05_laplace/laplace_basic.pg
+value = 1
+max_attempts = -1
+
+source_file = problems/05_laplace/laplace_ivp.pg
+value = 1
+max_attempts = -1
+
+source_file = problems/06_series_solutions/power_series_basic.pg
+value = 1
+max_attempts = -1

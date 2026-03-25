@@ -1,0 +1,61 @@
+## DESCRIPTION
+## Solving a 2x2 system of first-order linear ODEs with distinct real eigenvalues
+## ENDDESCRIPTION
+
+## DBsubject(Differential equations)
+## DBchapter(Systems of differential equations)
+## DBsection(Distinct real eigenvalues)
+## Institution(KSU)
+## Author(KSU ODE Team)
+## Level(3)
+## KEYWORDS('differential equations', 'systems', 'eigenvalues', 'eigenvectors')
+
+DOCUMENT();
+
+loadMacros(
+    "PGstandard.pl",
+    "MathObjects.pl",
+    "AnswerFormatHelp.pl",
+    "PGML.pl",
+    "MatrixMacros.pl",
+    "PGcourse.pl",
+);
+
+TEXT(beginproblem());
+
+Context("Numeric");
+
+# Simple diagonal system: x' = r1*x, y' = r2*y
+# General solution: x = C1*e^(r1*t), y = C2*e^(r2*t)
+$r1 = non_zero_random(-4, 4);
+do { $r2 = non_zero_random(-4, 4); } until ($r2 != $r1);
+
+# IVP: x(0)=a, y(0)=b
+$a = non_zero_random(-3, 3);
+$b = non_zero_random(-3, 3);
+
+BEGIN_PGML
+Solve the system of differential equations
+
+>>[`\begin{cases} x' = [$r1] x \\ y' = [$r2] y \end{cases}`]<<
+
+with initial conditions [`x(0) = [$a]`] and [`y(0) = [$b]`].
+
+[`x(t)`] = [____________________________]{Compute("$a * e^($r1*t)")} [@ AnswerFormatHelp("formulas") @]*
+
+[`y(t)`] = [____________________________]{Compute("$b * e^($r2*t)")} [@ AnswerFormatHelp("formulas") @]*
+END_PGML
+
+BEGIN_PGML_SOLUTION
+The system is decoupled.
+
+For [`x' = [$r1]x`]: [`x(t) = C_1 e^{[$r1]t}`].  
+Initial condition: [`x(0) = C_1 = [$a]`].
+
+For [`y' = [$r2]y`]: [`y(t) = C_2 e^{[$r2]t}`].  
+Initial condition: [`y(0) = C_2 = [$b]`].
+
+Solution: [`x(t) = [$a]e^{[$r1]t}`], [`y(t) = [$b]e^{[$r2]t}`].
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

@@ -1,0 +1,97 @@
+DOCUMENT();
+
+loadMacros(
+  "PGstandard.pl",
+  "MathObjects.pl",
+  "answerHints.pl"
+);
+
+TEXT(beginproblem());
+Context("Numeric");
+Context()->variables->add(t => "Real");
+
+# ============================================================
+# Instructor comments:
+# Upper-triangular system:
+#   x' = a x
+#   y' = b x + c y
+# with x(0)=x0, y(0)=y0
+# Clean because X(s) is immediate, then substitute into Y(s).
+# Parameters chosen so a != c.
+# ============================================================
+
+@triples = ([2,1,4],[1,2,3],[3,2,1],[2,3,1]);
+$idx = random(0, scalar(@triples)-1, 1);
+($a,$b,$c) = @{$triples[$idx]};
+$x0 = list_random(1,2,3);
+$y0 = list_random(0,1,2);
+
+$xsol = Formula("$x0*exp($a*t)");
+$ysol = Formula("($y0 - ($b*$x0/($a-$c)))*exp($c*t) + ($b*$x0/($a-$c))*exp($a*t)");
+
+BEGIN_TEXT
+Use Laplace transforms to solve the triangular system
+\[
+\begin{cases}
+x'(t) = $a x(t),\\
+y'(t) = $b x(t) + $c y(t),
+\end{cases}
+\qquad
+x(0)=$x0,\; y(0)=$y0.
+\]
+
+Enter your answers as functions of \(t\).
+$PAR
+\(
+x(t)=\) \{ ans_rule(30) \}
+$PAR
+\(
+y(t)=\) \{ ans_rule(40) \}
+
+END_TEXT
+
+ANS($xsol->cmp());
+ANS($ysol->cmp());
+
+BEGIN_HINT
+First solve for \(X(s)={\mathscr L}\left\lbrace x(t)\right\rbrace\) from the first equation. Then substitute \(X(s)\) into the transformed second equation.
+END_HINT
+
+BEGIN_SOLUTION
+Taking Laplace transforms gives
+\[
+sX(s)-$x0 = $a X(s),
+\]
+so
+\[
+X(s)=\frac{$x0}{s-$a}.
+\]
+For the second equation,
+\[
+sY(s)-$y0 = $b X(s) + $c Y(s),
+\]
+hence
+\[
+(s-$c)Y(s)=\frac{$b*$x0}{s-$a}+$y0.
+\]
+Therefore
+\[
+Y(s)=\frac{$b*$x0}{(s-$a)(s-$c)}+\frac{$y0}{s-$c}.
+\]
+Since \( $a \neq $c \),
+\[
+\frac{1}{(s-$a)(s-$c)}
+=\frac{1}{$a-$c}\left(\frac{1}{s-$a}-\frac{1}{s-$c}\right).
+\]
+So
+\[
+x(t)=$x0 e^{$a t},
+\]
+and
+\[
+y(t)=\left($y0-\frac{$b*$x0}{$a-$c}\right)e^{$c t}
++\frac{$b*$x0}{$a-$c}e^{$a t}.
+\]
+END_SOLUTION
+
+ENDDOCUMENT();

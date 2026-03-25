@@ -1,0 +1,60 @@
+## DESCRIPTION
+## Solving a second-order linear ODE with complex conjugate roots (underdamped oscillation)
+## ENDDESCRIPTION
+
+## DBsubject(Differential equations)
+## DBchapter(Second order differential equations)
+## DBsection(Complex roots)
+## Institution(KSU)
+## Author(KSU ODE Team)
+## Level(3)
+## KEYWORDS('differential equations', 'second order', 'complex roots', 'oscillation')
+
+DOCUMENT();
+
+loadMacros(
+    "PGstandard.pl",
+    "MathObjects.pl",
+    "AnswerFormatHelp.pl",
+    "PGML.pl",
+    "PGcourse.pl",
+);
+
+TEXT(beginproblem());
+
+Context("Numeric");
+
+# y'' + 2*alpha*y' + (alpha^2 + beta^2)*y = 0
+# Roots: r = -alpha +/- beta*i
+# General solution: y = e^(-alpha*x)*(C1*cos(beta*x) + C2*sin(beta*x))
+$alpha = random(1, 4);
+$beta  = random(1, 4);
+
+$b = 2 * $alpha;
+$c = $alpha**2 + $beta**2;
+
+BEGIN_PGML
+Find the general solution to
+
+>>[` y'' + [$b] y' + [$c] y = 0. `]<<
+
+Enter the general solution using [`C_1`] and [`C_2`] for the arbitrary constants:
+
+[`y(x)`] = [____________________________]{Compute("e^(-$alpha*x)*(C_1*cos($beta*x) + C_2*sin($beta*x))")} [@ AnswerFormatHelp("formulas") @]*
+END_PGML
+
+BEGIN_PGML_SOLUTION
+The characteristic equation is:
+
+[`r^2 + [$b] r + [$c] = 0`]
+
+Using the quadratic formula:
+
+[`r = \dfrac{-[$b] \pm \sqrt{[$b]^2 - 4 \cdot [$c]}}{2} = -[$alpha] \pm [$beta] i`]
+
+Since the roots are complex conjugates [`r = -[$alpha] \pm [$beta]i`], the general solution is:
+
+[`y = e^{-[$alpha]x}\!\left(C_1 \cos([$beta]x) + C_2 \sin([$beta]x)\right)`]
+END_PGML_SOLUTION
+
+ENDDOCUMENT();
